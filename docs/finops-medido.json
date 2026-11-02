@@ -1,0 +1,30 @@
+{
+  "runs": [
+    {
+      "run_id": "20261102T213746Z_f9941625",
+      "bytes_processados": 634727933,
+      "duracao_segundos": 53.221575,
+      "etapas": 20
+    },
+    {
+      "run_id": "20261102T213153Z_3eb5d839",
+      "bytes_processados": 91632571,
+      "duracao_segundos": 11.298306,
+      "etapas": 6
+    },
+    {
+      "run_id": "20261102T211857Z_28de3ba4",
+      "bytes_processados": 88963977,
+      "duracao_segundos": 2.254253,
+      "etapas": 1
+    },
+    {
+      "run_id": "20261102T194546Z_a936c611",
+      "bytes_processados": 632059339,
+      "duracao_segundos": 46.627044,
+      "etapas": 15
+    }
+  ],
+  "gcs_bytes": 204136728,
+  "gcs_objects": 34
+}

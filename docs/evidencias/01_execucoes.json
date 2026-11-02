@@ -1,0 +1,86 @@
+[
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "started_at": null,
+    "finished_at": "2026-11-02 21:39:12.743956+00:00",
+    "status": "SUCESSO",
+    "erro": null
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "started_at": "2026-11-02 21:37:46.057533+00:00",
+    "finished_at": null,
+    "status": "INICIADO",
+    "erro": null
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "started_at": null,
+    "finished_at": "2026-11-02 21:32:32.342193+00:00",
+    "status": "SUCESSO",
+    "erro": null
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "started_at": "2026-11-02 21:31:53.407385+00:00",
+    "finished_at": null,
+    "status": "INICIADO",
+    "erro": null
+  },
+  {
+    "run_id": "20261102T211857Z_28de3ba4",
+    "started_at": null,
+    "finished_at": "2026-11-02 21:19:16.782037+00:00",
+    "status": "FALHA",
+    "erro": "Regra bloqueante join_alunos falhou: valor=0.5171077307772453, limite=0.8. 12408/23995; chaves=['_id_municipio', '_ano', '_rede', '_serie']; taxa mínima 80.0%"
+  },
+  {
+    "run_id": "20261102T211857Z_28de3ba4",
+    "started_at": "2026-11-02 21:18:57.107857+00:00",
+    "finished_at": null,
+    "status": "INICIADO",
+    "erro": null
+  },
+  {
+    "run_id": "20261102T202319Z_48f00a18",
+    "started_at": null,
+    "finished_at": "2026-11-02 20:23:33.866940+00:00",
+    "status": "FALHA",
+    "erro": "Não foi possível identificar unicamente a rede 'publica' em 'uf' a partir de silver.dicionario. Candidatos=[], códigos presentes=['0', '2', '3', '5']. Consulte SELECT id_tabela, nome_coluna, chave, valor FROM silver.dicionario WHERE LOWER(nome_coluna)='rede'."
+  },
+  {
+    "run_id": "20261102T202319Z_48f00a18",
+    "started_at": "2026-11-02 20:23:19.824117+00:00",
+    "finished_at": null,
+    "status": "INICIADO",
+    "erro": null
+  },
+  {
+    "run_id": "20261102T200934Z_a510e76a",
+    "started_at": null,
+    "finished_at": "2026-11-02 20:09:47.019186+00:00",
+    "status": "FALHA",
+    "erro": "Não foi possível identificar unicamente a rede 'publica' em 'municipio' a partir de silver.dicionario. Candidatos=[], códigos presentes=['0', '2', '3', '5']. Consulte SELECT id_tabela, nome_coluna, chave, valor FROM silver.dicionario WHERE LOWER(nome_coluna)='rede'."
+  },
+  {
+    "run_id": "20261102T200934Z_a510e76a",
+    "started_at": "2026-11-02 20:09:34.807605+00:00",
+    "finished_at": null,
+    "status": "INICIADO",
+    "erro": null
+  },
+  {
+    "run_id": "20261102T194546Z_a936c611",
+    "started_at": null,
+    "finished_at": "2026-11-02 19:46:53.712905+00:00",
+    "status": "FALHA",
+    "erro": "Regra bloqueante join_meta_municipio falhou: valor=0.0, limite=0.8. 0/23995; chaves=['_id_municipio', '_ano', '_rede']; taxa mínima 80.0%"
+  },
+  {
+    "run_id": "20261102T194546Z_a936c611",
+    "started_at": "2026-11-02 19:45:46.771694+00:00",
+    "finished_at": null,
+    "status": "INICIADO",
+    "erro": null
+  }
+]

@@ -1,0 +1,9 @@
+2026-11-02 21:50:29,260 INFO bronze-event-insert | job=a224aca6-7565-4e7d-8246-168e5bbae68d | processed=0 bytes | dry_run=False
+2026-11-02 21:50:31,276 INFO bronze-event-insert | job=f74496c6-282b-4d20-ac21-5b1b1bb5b90a | processed=0 bytes | dry_run=False
+2026-11-02 21:50:33,087 INFO bronze-event-insert | job=ab5a31a9-003a-4de7-bc11-ec20485eb4ec | processed=0 bytes | dry_run=False
+2026-11-02 21:50:34,946 INFO bronze-event-insert | job=74a20f0c-2fc4-4cfe-970f-6e1710550f49 | processed=0 bytes | dry_run=False
+2026-11-02 21:50:36,929 INFO bronze-event-insert | job=d34597b2-c492-45e3-b3b0-62ea53710367 | processed=0 bytes | dry_run=False
+2026-11-02 21:50:48,044 INFO bronze-event-insert | job=29e94bc1-adff-482e-8b48-6fd8c98a9c14 | processed=0 bytes | dry_run=False
+2026-11-02 21:50:49,978 INFO silver-eventos-deduplicados | job=be6b9f95-4268-48b5-a6d8-6a8beb595136 | processed=1344 bytes | dry_run=False
+2026-11-02 21:50:52,002 INFO gold-eventos | job=07710c5e-209b-493a-beb6-7ed96698bada | processed=465 bytes | dry_run=False
+2026-11-02 21:50:52,089 INFO Mensagens processadas=6; origem=simulado; verifique gold.indicador_eventos

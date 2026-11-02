@@ -1,0 +1,57 @@
+[
+  {
+    "event_id": "6382bfbb89ed45aea6642bc979366b57",
+    "id_municipio": "3550308",
+    "ano": 2026,
+    "indicador": 69.0,
+    "origem": "simulado",
+    "produced_at": "2026-11-02 21:50:16.728283+00:00",
+    "ingested_at": "2026-11-02 21:50:27.998877+00:00",
+    "latencia_seg": 11.27,
+    "categoria_fonte": "nao_oficial"
+  },
+  {
+    "event_id": "09e222c89afa4432bc3329a6b9c39a41",
+    "id_municipio": "3550308",
+    "ano": 2026,
+    "indicador": 66.0,
+    "origem": "simulado",
+    "produced_at": "2026-11-02 21:50:16.568127+00:00",
+    "ingested_at": "2026-11-02 21:50:35.551226+00:00",
+    "latencia_seg": 18.983,
+    "categoria_fonte": "nao_oficial"
+  },
+  {
+    "event_id": "7c4691fbafaf46fab4004dd7c2f880e8",
+    "id_municipio": "3550308",
+    "ano": 2026,
+    "indicador": 65.0,
+    "origem": "simulado",
+    "produced_at": "2026-11-02 21:50:16.346219+00:00",
+    "ingested_at": "2026-11-02 21:50:31.880628+00:00",
+    "latencia_seg": 15.534,
+    "categoria_fonte": "nao_oficial"
+  },
+  {
+    "event_id": "d1085334939c4b1d9fdde4dd71771457",
+    "id_municipio": "3550308",
+    "ano": 2026,
+    "indicador": 67.0,
+    "origem": "simulado",
+    "produced_at": "2026-11-02 21:50:16.610489+00:00",
+    "ingested_at": "2026-11-02 21:50:46.593717+00:00",
+    "latencia_seg": 29.983,
+    "categoria_fonte": "nao_oficial"
+  },
+  {
+    "event_id": "132e1813522e40928700e74bc9ac1ce4",
+    "id_municipio": "3550308",
+    "ano": 2026,
+    "indicador": 68.0,
+    "origem": "simulado",
+    "produced_at": "2026-11-02 21:50:16.679765+00:00",
+    "ingested_at": "2026-11-02 21:50:33.600950+00:00",
+    "latencia_seg": 16.921,
+    "categoria_fonte": "nao_oficial"
+  }
+]

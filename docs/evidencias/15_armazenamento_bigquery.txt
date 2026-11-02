@@ -1,0 +1,8 @@
+ARMAZENAMENTO BIGQUERY - FIAP
+-------------------------------------------------------
+bronze     |   8 tabelas | 0.000001 GiB
+silver     |   9 tabelas | 0.337129 GiB
+gold       |   6 tabelas | 0.002291 GiB
+ops        |   5 tabelas | 0.000018 GiB
+-------------------------------------------------------
+TOTAL: 0.339439 GiB

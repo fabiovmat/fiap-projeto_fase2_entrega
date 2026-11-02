@@ -1,0 +1,30 @@
+{
+  "uf": {
+    "estimated_bytes": 10330,
+    "job_id": null
+  },
+  "meta_alfabetizacao_brasil": {
+    "estimated_bytes": 270,
+    "job_id": null
+  },
+  "meta_alfabetizacao_uf": {
+    "estimated_bytes": 7374,
+    "job_id": null
+  },
+  "meta_alfabetizacao_municipio": {
+    "estimated_bytes": 1151232,
+    "job_id": null
+  },
+  "municipio": {
+    "estimated_bytes": 1832061,
+    "job_id": null
+  },
+  "alunos": {
+    "estimated_bytes": 268545240,
+    "job_id": null
+  },
+  "dicionario": {
+    "estimated_bytes": 1174,
+    "job_id": null
+  }
+}

@@ -1,0 +1,37 @@
+[
+  {
+    "run_id": "demo-falha",
+    "momento": "2026-11-02 22:29:08.541628+00:00",
+    "etapa": "quality-fail-demo",
+    "mensagem": "Regra bloqueante join_teste_controlado falhou: valor=0.6, limite=0.8. Execução intencional: 60% de correspondência, mínimo 80%",
+    "webhook_enviado": true
+  },
+  {
+    "run_id": "20261102T211857Z_28de3ba4",
+    "momento": "2026-11-02 21:19:16.892218+00:00",
+    "etapa": "gold-only",
+    "mensagem": "Regra bloqueante join_alunos falhou: valor=0.5171077307772453, limite=0.8. 12408/23995; chaves=['_id_municipio', '_ano', '_rede', '_serie']; taxa mínima 80.0%",
+    "webhook_enviado": false
+  },
+  {
+    "run_id": "20261102T202319Z_48f00a18",
+    "momento": "2026-11-02 20:23:34.093845+00:00",
+    "etapa": "gold-only",
+    "mensagem": "Não foi possível identificar unicamente a rede 'publica' em 'uf' a partir de silver.dicionario. Candidatos=[], códigos presentes=['0', '2', '3', '5']. Consulte SELECT id_tabela, nome_coluna, chave, valor FROM silver.dicionario WHERE LOWER(nome_coluna)='rede'.",
+    "webhook_enviado": false
+  },
+  {
+    "run_id": "20261102T200934Z_a510e76a",
+    "momento": "2026-11-02 20:09:47.115864+00:00",
+    "etapa": "gold-only",
+    "mensagem": "Não foi possível identificar unicamente a rede 'publica' em 'municipio' a partir de silver.dicionario. Candidatos=[], códigos presentes=['0', '2', '3', '5']. Consulte SELECT id_tabela, nome_coluna, chave, valor FROM silver.dicionario WHERE LOWER(nome_coluna)='rede'.",
+    "webhook_enviado": false
+  },
+  {
+    "run_id": "20261102T194546Z_a936c611",
+    "momento": "2026-11-02 19:46:53.807588+00:00",
+    "etapa": "batch",
+    "mensagem": "Regra bloqueante join_meta_municipio falhou: valor=0.0, limite=0.8. 0/23995; chaves=['_id_municipio', '_ano', '_rede']; taxa mínima 80.0%",
+    "webhook_enviado": false
+  }
+]

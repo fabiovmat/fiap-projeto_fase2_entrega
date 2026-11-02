@@ -1,0 +1,4 @@
+2026-11-02 21:58:25,989 INFO bronze-event-insert | job=d52b5119-db4b-4481-aa6d-1daf9b5c7b36 | processed=0 bytes | dry_run=False
+2026-11-02 21:58:28,358 INFO silver-eventos-deduplicados | job=42a1611f-02e3-4775-aec4-162e867efae7 | processed=1569 bytes | dry_run=False
+2026-11-02 21:58:31,160 INFO gold-eventos | job=d9b7d6b3-1d16-4352-bfcd-eb12c2afe38b | processed=465 bytes | dry_run=False
+2026-11-02 21:58:31,269 INFO Mensagens processadas=1; origem=simulado; verifique gold.indicador_eventos

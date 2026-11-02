@@ -1,0 +1,10 @@
+Traceback (most recent call last):
+  File "<frozen runpy>", line 198, in _run_module_as_main
+  File "<frozen runpy>", line 88, in _run_code
+  File "/home/fabio_prog_78/fiap-projeto_fase2_entrega/src/alfabetizacao/cli.py", line 100, in <module>
+    main()
+  File "/home/fabio_prog_78/fiap-projeto_fase2_entrega/src/alfabetizacao/cli.py", line 89, in main
+    cloud.quality("demo-falha", "join_teste_controlado", "BLOQUEANTE", 0.60, 0.80, False,
+  File "/home/fabio_prog_78/fiap-projeto_fase2_entrega/src/alfabetizacao/cloud.py", line 111, in quality
+    raise QualityError(f"Regra bloqueante {name} falhou: valor={value}, limite={threshold}. {details}")
+alfabetizacao.quality.QualityError: Regra bloqueante join_teste_controlado falhou: valor=0.6, limite=0.8. Execução intencional: 60% de correspondência, mínimo 80%

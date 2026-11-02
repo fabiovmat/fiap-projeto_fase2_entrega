@@ -1,0 +1,431 @@
+{
+  "uf": [
+    {
+      "name": "ano",
+      "type": "INTEGER",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "sigla_uf",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "serie",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "rede",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "taxa_alfabetizacao",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "media_portugues",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_0",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_1",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_2",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_3",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_4",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_5",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_6",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_7",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_8",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    }
+  ],
+  "meta_alfabetizacao_brasil": [
+    {
+      "name": "ano",
+      "type": "INTEGER",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "rede",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "taxa_alfabetizacao",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2024",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2025",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2026",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2027",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2028",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2029",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2030",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "percentual_participacao",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    }
+  ],
+  "meta_alfabetizacao_uf": [
+    {
+      "name": "ano",
+      "type": "INTEGER",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "sigla_uf",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "rede",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "taxa_alfabetizacao",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2024",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2025",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2026",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2027",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2028",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2029",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2030",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "percentual_participacao",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    }
+  ],
+  "meta_alfabetizacao_municipio": [
+    {
+      "name": "ano",
+      "type": "INTEGER",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "id_municipio",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "rede",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "taxa_alfabetizacao",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2024",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2025",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2026",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2027",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2028",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2029",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "meta_alfabetizacao_2030",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "nivel_alfabetizacao",
+      "type": "INTEGER",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "percentual_participacao",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    }
+  ],
+  "municipio": [
+    {
+      "name": "ano",
+      "type": "INTEGER",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "id_municipio",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "serie",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "rede",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "taxa_alfabetizacao",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "media_portugues",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_0",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_1",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_2",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_3",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_4",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_5",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_6",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_7",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proporcao_aluno_nivel_8",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    }
+  ],
+  "alunos": [
+    {
+      "name": "ano",
+      "type": "INTEGER",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "id_municipio",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "id_escola",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "id_aluno",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "caderno",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "serie",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "rede",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "presenca",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "preenchimento_caderno",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "alfabetizado",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "proficiencia",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "peso_aluno",
+      "type": "FLOAT",
+      "mode": "NULLABLE"
+    }
+  ],
+  "dicionario": [
+    {
+      "name": "id_tabela",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "nome_coluna",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "chave",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "cobertura_temporal",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    },
+    {
+      "name": "valor",
+      "type": "STRING",
+      "mode": "NULLABLE"
+    }
+  ]
+}

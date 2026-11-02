@@ -1,0 +1,782 @@
+[
+  {
+    "run_id": "demo-falha",
+    "regra": "join_teste_controlado",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.6,
+    "limite": 0.8,
+    "status": "FALHA",
+    "checked_at": "2026-11-02 22:29:08.087013+00:00",
+    "detalhes": "Execução intencional: 60% de correspondência, mínimo 80%"
+  },
+  {
+    "run_id": "stream_235de1929d1b",
+    "regra": "evento_invalido_quarentena",
+    "classificacao": "INFORMATIVA",
+    "valor": 0.0,
+    "limite": 1.0,
+    "status": "FALHA",
+    "checked_at": "2026-11-02 21:58:26.150444+00:00",
+    "detalhes": "Indicador precisa estar entre 0 e 100"
+  },
+  {
+    "run_id": "stream_bc2145082c88",
+    "regra": "evento_valido",
+    "classificacao": "INFORMATIVA",
+    "valor": 1.0,
+    "limite": 1.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:50:48.147700+00:00",
+    "detalhes": "evento=d1085334939c4b1d9fdde4dd71771457; latencia_recebimento_s=31.537"
+  },
+  {
+    "run_id": "stream_bc2145082c88",
+    "regra": "evento_valido",
+    "classificacao": "INFORMATIVA",
+    "valor": 1.0,
+    "limite": 1.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:50:37.058838+00:00",
+    "detalhes": "evento=09e222c89afa4432bc3329a6b9c39a41; latencia_recebimento_s=20.491"
+  },
+  {
+    "run_id": "stream_bc2145082c88",
+    "regra": "evento_valido",
+    "classificacao": "INFORMATIVA",
+    "valor": 1.0,
+    "limite": 1.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:50:35.054880+00:00",
+    "detalhes": "evento=132e1813522e40928700e74bc9ac1ce4; latencia_recebimento_s=18.375"
+  },
+  {
+    "run_id": "stream_bc2145082c88",
+    "regra": "evento_valido",
+    "classificacao": "INFORMATIVA",
+    "valor": 1.0,
+    "limite": 1.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:50:33.176959+00:00",
+    "detalhes": "evento=7c4691fbafaf46fab4004dd7c2f880e8; latencia_recebimento_s=16.831"
+  },
+  {
+    "run_id": "stream_bc2145082c88",
+    "regra": "evento_valido",
+    "classificacao": "INFORMATIVA",
+    "valor": 1.0,
+    "limite": 1.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:50:31.404443+00:00",
+    "detalhes": "evento=6382bfbb89ed45aea6642bc979366b57; latencia_recebimento_s=14.676"
+  },
+  {
+    "run_id": "stream_bc2145082c88",
+    "regra": "evento_valido",
+    "classificacao": "INFORMATIVA",
+    "valor": 1.0,
+    "limite": 1.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:50:29.491509+00:00",
+    "detalhes": "evento=6382bfbb89ed45aea6642bc979366b57; latencia_recebimento_s=12.763"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "nulos_uf_ano",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:39:01.067356+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "nulos_municipio_ano",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:39:00.070787+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "duplicidade_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:59.095030+00:00",
+    "detalhes": "Grão avaliado: _id_municipio, _ano, _rede, _serie"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "duplicidade_meta_alfabetizacao_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:57.999337+00:00",
+    "detalhes": "Grão avaliado: _sigla_uf, _ano"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "join_meta_uf_publica",
+    "classificacao": "BLOQUEANTE",
+    "valor": 1.0,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:56.934071+00:00",
+    "detalhes": "49/49; chaves=['_sigla_uf', '_ano']; taxa mínima 80.0%; universo=recorte aplicável"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "duplicidade_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:56.002389+00:00",
+    "detalhes": "Grão avaliado: _sigla_uf, _ano, _rede, _serie"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "join_indicador_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.9999166493019379,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:54.994183+00:00",
+    "detalhes": "23993/23995; chaves=['_sigla_uf', '_ano', '_rede', '_serie']; taxa mínima 80.0%; universo=recorte aplicável"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "join_alunos_ano_2024_rede_3_serie_2",
+    "classificacao": "BLOQUEANTE",
+    "valor": 1.0,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:53.943096+00:00",
+    "detalhes": "5448/5448; recorte individual ano=2024, rede=3, serie=2"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "join_alunos_ano_2024_rede_2_serie_2",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.9990791896869244,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:53.856077+00:00",
+    "detalhes": "1085/1086; recorte individual ano=2024, rede=2, serie=2"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "join_alunos_ano_2023_rede_3_serie_2",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.8849118942731278,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:53.774590+00:00",
+    "detalhes": "4821/5448; recorte individual ano=2023, rede=3, serie=2"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "join_alunos_ano_2023_rede_2_serie_2",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.917319408181027,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:53.683780+00:00",
+    "detalhes": "1054/1149; recorte individual ano=2023, rede=2, serie=2"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "join_alunos_redes_individuais",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.9449394562485721,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:52.559049+00:00",
+    "detalhes": "12408/13131; chaves=['_id_municipio', '_ano', '_rede', '_serie']; taxa mínima 80.0%; universo=recorte aplicável"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "join_alunos_cobertura_historica",
+    "classificacao": "INFORMATIVA",
+    "valor": 0.5171077307772453,
+    "limite": 0.8,
+    "status": "FALHA",
+    "checked_at": "2026-11-02 21:38:51.637836+00:00",
+    "detalhes": "12408/23995; chaves=['_id_municipio', '_ano', '_rede', '_serie']; taxa mínima 80.0%; universo=total histórico"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "duplicidade_meta_alfabetizacao_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:50.425535+00:00",
+    "detalhes": "Grão avaliado: _id_municipio, _ano"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "join_meta_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.9777900146842878,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:49.327311+00:00",
+    "detalhes": "10654/10896; chaves=['_id_municipio', '_ano']; taxa mínima 80.0%; universo=recorte aplicável"
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "faixa_percentual_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:42.573284+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "faixa_percentual_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:41.567708+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "nulos_meta_alfabetizacao_uf_sigla_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:40.509192+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "nulos_uf_sigla_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:39.164415+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "nulos_meta_alfabetizacao_municipio_id_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:38.193557+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213746Z_f9941625",
+    "regra": "nulos_municipio_id_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:38:37.181688+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "nulos_uf_ano",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:21.359922+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "nulos_municipio_ano",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:20.461330+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "duplicidade_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:19.535745+00:00",
+    "detalhes": "Grão avaliado: _id_municipio, _ano, _rede, _serie"
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "duplicidade_meta_alfabetizacao_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:18.302147+00:00",
+    "detalhes": "Grão avaliado: _sigla_uf, _ano"
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "join_meta_uf_publica",
+    "classificacao": "BLOQUEANTE",
+    "valor": 1.0,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:17.281668+00:00",
+    "detalhes": "49/49; chaves=['_sigla_uf', '_ano']; taxa mínima 80.0%; universo=recorte aplicável"
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "duplicidade_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:16.388068+00:00",
+    "detalhes": "Grão avaliado: _sigla_uf, _ano, _rede, _serie"
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "join_indicador_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.9999166493019379,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:15.070289+00:00",
+    "detalhes": "23993/23995; chaves=['_sigla_uf', '_ano', '_rede', '_serie']; taxa mínima 80.0%; universo=recorte aplicável"
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "join_alunos_ano_2024_rede_3_serie_2",
+    "classificacao": "BLOQUEANTE",
+    "valor": 1.0,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:14.109617+00:00",
+    "detalhes": "5448/5448; recorte individual ano=2024, rede=3, serie=2"
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "join_alunos_ano_2024_rede_2_serie_2",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.9990791896869244,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:13.997016+00:00",
+    "detalhes": "1085/1086; recorte individual ano=2024, rede=2, serie=2"
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "join_alunos_ano_2023_rede_3_serie_2",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.8849118942731278,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:13.912238+00:00",
+    "detalhes": "4821/5448; recorte individual ano=2023, rede=3, serie=2"
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "join_alunos_ano_2023_rede_2_serie_2",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.917319408181027,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:13.804477+00:00",
+    "detalhes": "1054/1149; recorte individual ano=2023, rede=2, serie=2"
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "join_alunos_redes_individuais",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.9449394562485721,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:12.921030+00:00",
+    "detalhes": "12408/13131; chaves=['_id_municipio', '_ano', '_rede', '_serie']; taxa mínima 80.0%; universo=recorte aplicável"
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "join_alunos_cobertura_historica",
+    "classificacao": "INFORMATIVA",
+    "valor": 0.5171077307772453,
+    "limite": 0.8,
+    "status": "FALHA",
+    "checked_at": "2026-11-02 21:32:10.728033+00:00",
+    "detalhes": "12408/23995; chaves=['_id_municipio', '_ano', '_rede', '_serie']; taxa mínima 80.0%; universo=total histórico"
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "duplicidade_meta_alfabetizacao_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:09.352918+00:00",
+    "detalhes": "Grão avaliado: _id_municipio, _ano"
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "join_meta_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.9777900146842878,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:08.485666+00:00",
+    "detalhes": "10654/10896; chaves=['_id_municipio', '_ano']; taxa mínima 80.0%; universo=recorte aplicável"
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "faixa_percentual_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:01.613717+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "faixa_percentual_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:32:00.688415+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "nulos_meta_alfabetizacao_uf_sigla_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:31:59.433730+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "nulos_uf_sigla_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:31:58.292583+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "nulos_meta_alfabetizacao_municipio_id_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:31:57.253602+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T213153Z_3eb5d839",
+    "regra": "nulos_municipio_id_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:31:56.141273+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T211857Z_28de3ba4",
+    "regra": "join_alunos",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.5171077307772453,
+    "limite": 0.8,
+    "status": "FALHA",
+    "checked_at": "2026-11-02 21:19:16.681679+00:00",
+    "detalhes": "12408/23995; chaves=['_id_municipio', '_ano', '_rede', '_serie']; taxa mínima 80.0%"
+  },
+  {
+    "run_id": "20261102T211857Z_28de3ba4",
+    "regra": "duplicidade_meta_alfabetizacao_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:19:15.451064+00:00",
+    "detalhes": "Grão avaliado: _id_municipio, _ano"
+  },
+  {
+    "run_id": "20261102T211857Z_28de3ba4",
+    "regra": "join_meta_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.9777900146842878,
+    "limite": 0.8,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:19:14.458433+00:00",
+    "detalhes": "10654/10896; chaves=['_id_municipio', '_ano']; taxa mínima 80.0%"
+  },
+  {
+    "run_id": "20261102T211857Z_28de3ba4",
+    "regra": "faixa_percentual_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:19:07.031306+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T211857Z_28de3ba4",
+    "regra": "faixa_percentual_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:19:05.720643+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T211857Z_28de3ba4",
+    "regra": "nulos_meta_alfabetizacao_uf_sigla_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:19:04.634598+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T211857Z_28de3ba4",
+    "regra": "nulos_uf_sigla_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:19:03.440148+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T211857Z_28de3ba4",
+    "regra": "nulos_meta_alfabetizacao_municipio_id_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:19:01.920763+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T211857Z_28de3ba4",
+    "regra": "nulos_municipio_id_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 21:19:00.216018+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T202319Z_48f00a18",
+    "regra": "faixa_percentual_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 20:23:29.832400+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T202319Z_48f00a18",
+    "regra": "faixa_percentual_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 20:23:28.575896+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T202319Z_48f00a18",
+    "regra": "nulos_meta_alfabetizacao_uf_sigla_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 20:23:27.393510+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T202319Z_48f00a18",
+    "regra": "nulos_uf_sigla_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 20:23:26.116177+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T202319Z_48f00a18",
+    "regra": "nulos_meta_alfabetizacao_municipio_id_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 20:23:24.828925+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T202319Z_48f00a18",
+    "regra": "nulos_municipio_id_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 20:23:23.282452+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T200934Z_a510e76a",
+    "regra": "faixa_percentual_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 20:09:44.625557+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T200934Z_a510e76a",
+    "regra": "faixa_percentual_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 20:09:43.403988+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T200934Z_a510e76a",
+    "regra": "nulos_meta_alfabetizacao_uf_sigla_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 20:09:42.169609+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T200934Z_a510e76a",
+    "regra": "nulos_uf_sigla_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 20:09:41.058004+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T200934Z_a510e76a",
+    "regra": "nulos_meta_alfabetizacao_municipio_id_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 20:09:39.625638+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T200934Z_a510e76a",
+    "regra": "nulos_municipio_id_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 20:09:37.667216+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T194546Z_a936c611",
+    "regra": "join_meta_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.8,
+    "status": "FALHA",
+    "checked_at": "2026-11-02 19:46:53.600633+00:00",
+    "detalhes": "0/23995; chaves=['_id_municipio', '_ano', '_rede']; taxa mínima 80.0%"
+  },
+  {
+    "run_id": "20261102T194546Z_a936c611",
+    "regra": "faixa_percentual_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 19:46:49.900696+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T194546Z_a936c611",
+    "regra": "faixa_percentual_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 19:46:48.570054+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T194546Z_a936c611",
+    "regra": "nulos_meta_alfabetizacao_uf_sigla_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 19:46:47.462436+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T194546Z_a936c611",
+    "regra": "nulos_uf_sigla_uf",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 19:46:46.394734+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T194546Z_a936c611",
+    "regra": "nulos_meta_alfabetizacao_municipio_id_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 19:46:44.015624+00:00",
+    "detalhes": ""
+  },
+  {
+    "run_id": "20261102T194546Z_a936c611",
+    "regra": "nulos_municipio_id_municipio",
+    "classificacao": "BLOQUEANTE",
+    "valor": 0.0,
+    "limite": 0.0,
+    "status": "OK",
+    "checked_at": "2026-11-02 19:46:42.548606+00:00",
+    "detalhes": ""
+  }
+]
