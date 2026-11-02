@@ -12,7 +12,7 @@ from .streaming import create_resources, publish, consume, refresh_analytical_ev
 def main():
     parser = argparse.ArgumentParser(prog="python -m alfabetizacao.cli")
     parser.add_argument("command", choices=[
-        "init", "schema", "dry-run", "batch", "pubsub-init", "publish", "consume", "stream-refresh", "evidence", "finops", "quality-fail-demo", "export-phase3",
+        "init", "schema", "dry-run", "batch", "gold-only", "pubsub-init", "publish", "consume", "stream-refresh", "evidence", "finops", "quality-fail-demo", "export-phase3",
     ])
     parser.add_argument("--count", type=int, default=5)
     parser.add_argument("--invalid", action="store_true")
@@ -28,6 +28,24 @@ def main():
         dry_run_sources(cloud)
     elif args.command == "batch":
         print("RUN_ID:", execute_batch(cloud))
+    elif args.command == "gold-only":
+        # Retoma a partir da Silver já materializada sem nova ingestão Bronze.
+        from .batch import run_identifier
+        from .gold import validate_and_publish
+        from .cloud import utcnow
+        run_id = run_identifier()
+        cloud.insert_log("runs", {"run_id": run_id, "started_at": utcnow().isoformat(),
+                                  "finished_at": None, "status": "INICIADO", "erro": None})
+        try:
+            validate_and_publish(cloud, run_id)
+            cloud.insert_log("runs", {"run_id": run_id, "started_at": None,
+                                      "finished_at": utcnow().isoformat(), "status": "SUCESSO", "erro": None})
+        except Exception as exc:
+            cloud.insert_log("runs", {"run_id": run_id, "started_at": None,
+                                      "finished_at": utcnow().isoformat(), "status": "FALHA", "erro": str(exc)[:4000]})
+            cloud.alert(run_id, "gold-only", str(exc))
+            raise
+        print("RUN_ID Gold-only:", run_id)
     elif args.command == "pubsub-init":
         create_resources(cloud)
     elif args.command == "publish":

@@ -3,9 +3,9 @@
 ## Pipeline híbrido para análise da alfabetização no Brasil
 
 **Pós-Tech FIAP | Tech Challenge — Fase 2**  
-**Responsável:** FABIO VERISSIMO DE MATOS 
-**Repositório:**  https://github.com/fabiovmat/fiap-projeto_fase2_entrega.git
-**Vídeo executivo (até 5 minutos):** 
+**Equipe:** [INSERIR INTEGRANTES]  
+**Repositório:** [INSERIR URL PÚBLICA DO GITHUB]  
+**Vídeo executivo (até 5 minutos):** [INSERIR LINK DO VÍDEO]
 
 > **Estado da entrega:** implementação disponível no repositório; **execução real no Google Cloud, validação do esquema da fonte, custos medidos e evidências ainda devem ser confirmados e adicionados pela equipe**. Não confundir código implementado com recursos efetivamente implantados.
 
@@ -95,7 +95,8 @@ flowchart TD
 
 ## 4. Estrutura do repositório
 
-fiap_projeto_fase2_entrega/
+```text
+fiap-alfabetizacao-gcp/
 ├── .env.example
 ├── .gitignore
 ├── README.md
@@ -124,8 +125,9 @@ fiap_projeto_fase2_entrega/
     └── evidencias/
         ├── .gitkeep
         └── LEIA-ME.md
+```
 
-
+Arquivos como `docs/esquema.json`, `docs/dry-run.json`, `docs/finops-medido.md` e evidências em JSON **só existirão após os respectivos comandos serem executados**. Prints e registros de execução devem ser incluídos manualmente na entrega.
 
 ---
 
@@ -137,9 +139,78 @@ fiap_projeto_fase2_entrega/
 4. APIs habilitáveis de BigQuery, Cloud Storage e Pub/Sub.
 5. **Orçamento e alertas de faturamento configurados** antes de ingerir os microdados.
 
+**Segurança:** não versionar `.env`, credenciais JSON, tokens de webhook ou dados pessoais. O `.gitignore` protege esses itens comuns, mas o histórico Git deve ser revisado antes de publicar. Não subir microdados individuais para o repositório.
 
+### 5.1 Clonar e instalar
 
-## 5. Executar ingestão batch
+No [Google Cloud Shell](https://shell.cloud.google.com/):
+
+```bash
+git clone https://github.com/SEU-USUARIO/fiap-alfabetizacao-gcp.git
+cd fiap-alfabetizacao-gcp
+
+python3 -m venv .venv
+source .venv/bin/activate
+python -m pip install --upgrade pip
+pip install -r requirements.txt
+pip install -e .
+
+cp .env.example .env
+nano .env
+```
+
+Variáveis de exemplo (substituir os identificadores, **não publicar o arquivo `.env`**):
+
+```dotenv
+GCP_PROJECT_ID=seu-projeto-gcp
+BQ_LOCATION=US
+GCS_LOCATION=us-central1
+GCS_BUCKET=seu-bucket-globalmente-unico
+PUBSUB_TOPIC=alfabetizacao-eventos
+PUBSUB_SUBSCRIPTION=alfabetizacao-consumer
+MAX_BYTES_BILLED=1073741824
+MIN_JOIN_MATCH_RATE=0.80
+ALERT_WEBHOOK_URL=
+```
+
+- `MAX_BYTES_BILLED`: teto por consulta, inicialmente **1 GiB**, que pode bloquear leituras grandes da origem; ajustar **somente depois do dry-run e da avaliação de custos**.
+- `MIN_JOIN_MATCH_RATE`: mínimo inicial de **80%**; **parâmetro provisório**, que deve ser revisto e justificado com base nas taxas reais observadas.
+- `GCS_LOCATION=us-central1`: opção de bucket regional compatível com tabelas externas no dataset BigQuery `US` e elegível às cotas gratuitas do Storage quando aplicáveis. Se já houver um bucket criado em `US`, o script **não altera** sua localização automaticamente.
+- `ALERT_WEBHOOK_URL`: sem valor configurado, o erro permanece registrado em `ops.alertas`, mas **nenhuma notificação externa é enviada**.
+
+### 5.2 Autenticação, testes e provisionamento
+
+```bash
+# Se a conta ADC não estiver disponível no Cloud Shell:
+gcloud auth application-default login
+
+bash scripts/verificar.sh
+bash scripts/setup_gcp.sh
+
+# Inspecionar recursos criados
+gcloud config get-value project
+gcloud storage buckets describe "gs://$(grep '^GCS_BUCKET=' .env | cut -d= -f2)"
+```
+
+O `setup_gcp.sh` habilita APIs, cria o bucket se não existir, inicializa datasets `bronze`, `silver`, `gold` e `ops`, cria tabelas operacionais e prepara Pub/Sub. Isso **provisiona recursos reais** e depende de permissões e créditos disponíveis; executar localmente os testes **não** comprova implantação em nuvem.
+
+### 5.3 Inspecionar a origem e estimar consultas
+
+```bash
+python -m alfabetizacao.cli schema
+cat docs/esquema.json
+
+python -m alfabetizacao.cli dry-run
+cat docs/dry-run.json
+```
+
+É obrigatório verificar os nomes, tipos e códigos realmente publicados. O módulo `schema.py` contém **candidatos de nomes**, não um esquema garantido. Caso a origem tenha mudado, ajustar os mapeamentos e documentar a decisão; não inventar códigos da rede/série ou substituir ausência de meta por zero.
+
+> O `dry-run` estima bytes processados das sete tabelas; **não substitui a medição de execução**, e `LIMIT` não é uma estratégia de redução garantida de bytes lidos. Se algum scan ultrapassar o limite configurado, revisar a consulta e o recorte antes de aumentar o teto.
+
+---
+
+## 6. Executar ingestão batch
 
 ```bash
 python -m alfabetizacao.cli batch
@@ -169,8 +240,8 @@ gcloud storage ls 'gs://SEU_BUCKET/bronze/municipio/'
 
 | Tabela | Finalidade |
 |---|---|
-| `gold.indicador_municipio` | Resultado oficial, metas municipais, distância em pontos percentuais, referências UF e contagem de microdados |
-| `gold.indicador_uf` | Resultado por UF associado à meta estadual |
+| `gold.indicador_municipio` | Resultado oficial, comparação restrita às metas municipais, referências de indicadores UF por rede correspondente e contagem de microdados |
+| `gold.indicador_uf` | Resultado por UF; metas de rede Pública associadas somente ao mesmo recorte da fonte |
 | `gold.metas_brasil` | Trajetória de metas nacionais |
 | `gold.alunos_resumo` | Contagem agrupada dos microdados, sem interpretação como taxa de alfabetização |
 | `gold.dicionario` | Dicionário oficial para consulta de categorias |
@@ -179,7 +250,7 @@ gcloud storage ls 'gs://SEU_BUCKET/bronze/municipio/'
 
 ---
 
-## 6. Executar streaming simulado
+## 7. Executar streaming simulado
 
 ```bash
 # O setup já prepara o Pub/Sub; este comando pode ser repetido
@@ -211,7 +282,7 @@ bq query --use_legacy_sql=false \
 
 ---
 
-## 7. Regras de qualidade de dados
+## 8. Regras de qualidade de dados
 
 | Regra | Classificação | Efeito esperado |
 |---|---|---|
@@ -240,7 +311,7 @@ SELECT * FROM `SEU_PROJETO.ops.alertas` ORDER BY momento DESC LIMIT 20;
 
 ---
 
-## 8. Observabilidade e alertas
+## 9. Observabilidade e alertas
 
 Os registros operacionais são gravados no BigQuery, persistindo após a execução do terminal:
 
@@ -261,7 +332,7 @@ O comando produz amostras JSON em `docs/evidencias/`. Também devem ser feitos *
 
 ---
 
-## 9. FinOps — custos e medições
+## 10. FinOps — custos e medições
 
 A arquitetura evita clusters sempre ligados, usa BigQuery sob demanda, snapshots Parquet e verificação prévia com `dry-run`. O limite `MAX_BYTES_BILLED` vale **por job**; não é um teto mensal de gastos. Créditos gratuitos ou estudantis **não substituem controle financeiro**.
 
@@ -290,6 +361,56 @@ A ingestão é realizada na **GCP**, sem tráfego intencional entre nuvens. O bu
 
 ---
 
+## 11. Aplicação futura em Inteligência Artificial
+
+A base Gold será preservada para a **Fase 3**, possibilitando análises de desigualdade territorial e modelos de predição de desempenho ou risco de descumprimento das metas. Uma possível abordagem é criar características históricas (`ano`, localidade, série, rede, resultados em anos anteriores) para prever o indicador em um período futuro, **sem utilizar informações ainda indisponíveis na data da previsão**.
+
+**Prevenção de vazamento de alvo:** não usar a própria `distancia_pactuada_2030_pp` ou `status_meta_2030` como preditor de um rótulo derivado dessas colunas. Não usar eventos simulados para inferências sobre o Brasil real.
+
+Exportação versionada da Gold:
+
+```bash
+python -m alfabetizacao.cli export-phase3
+```
+
+Destino previsto: `gs://BUCKET/gold/indicador_municipio/run_id=.../part-*.parquet`.
+
+---
+
+## 12. Evidências necessárias para a entrega
+
+As evidências não foram produzidas automaticamente ao criar este repositório. Após executar no GCP, anexar, no mínimo:
+
+- [ ] Tela dos datasets `bronze`, `silver`, `gold` e `ops` criados no BigQuery.
+- [ ] Dois snapshots Bronze com `run_id` diferentes no Cloud Storage.
+- [ ] Jobs reais BigQuery com IDs, sucesso/falha, volume e duração.
+- [ ] Tabelas Gold com amostras e **contagens de linhas**.
+- [ ] Tópico/assinatura Pub/Sub e evento duplicado ou inválido tratado.
+- [ ] Gold de streaming com `origem=simulado` e latência real medida.
+- [ ] Falha proposital de qualidade, registro persistido e bloqueio quando aplicável.
+- [ ] Evidência de notificação externa configurada (webhook/alerta).
+- [ ] Relatório `docs/finops-medido.md` preenchido com custos e premissas.
+- [ ] Capturas sem credenciais/dados pessoais.
+- [ ] Link de vídeo executivo de até **5 minutos** nesta página.
+
+O [roteiro do vídeo](docs/roteiro-video.md) cobre problema, arquitetura, demonstração da solução, valor público e potencial de IA. As imagens, gráficos e números citados no vídeo devem corresponder à execução registrada.
+
+---
+
+## 13. Reprodutibilidade e publicação Git
+
+A versão das dependências está declarada em `requirements.txt`. Antes de enviar ao GitHub:
+
+```bash
+bash scripts/verificar.sh
+
+git status --short
+git add README.md src scripts tests docs .env.example .gitignore requirements.txt pyproject.toml
+git commit -m "docs: documenta arquitetura e execucao do Tech Challenge"
+git push origin main
+```
+
+Em um **clone limpo**, refazer instalação, `.env`, testes, esquema, dry-run e ingestão para validar o passo a passo. Não versionar `.env`, tokens ou arquivos de chave. Verificar se os caminhos do README existem e se não há afirmações sobre CI/CD ou recursos não provisionados.
 
 ### Limitações conhecidas
 
@@ -305,7 +426,7 @@ A ingestão é realizada na **GCP**, sem tráfego intencional entre nuvens. O bu
 
 ---
 
-## 13. Referências
+## 14. Referências
 
 - **Material-base do projeto:** enunciado interno da FIAP, *Tech Challenge — Fase 2: Pipeline Híbrido para Análise da Alfabetização no Brasil* (PDF fornecido aos integrantes).
 - [Base dos Dados — Dataset de Avaliação da Alfabetização](https://basedosdados.org/dataset/073a39d4-89cf-4068-b1e8-34ed0d9c0b72)
@@ -314,5 +435,5 @@ A ingestão é realizada na **GCP**, sem tráfego intencional entre nuvens. O bu
 - [Pub/Sub — Documentação](https://cloud.google.com/pubsub/docs)
 - [Google Cloud — Recursos gratuitos e teste](https://cloud.google.com/free/docs/free-cloud-features)
 
-**Responsáveis pela entrega:** FABIO VERISSIMO  
-**Última revisão:** 02/11/2026
+**Responsáveis pela entrega:** [INSERIR NOMES]  
+**Última revisão:** [INSERIR DATA DA ENTREGA]
