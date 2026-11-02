@@ -71,7 +71,7 @@ def main():
             cloud.quality("demo-falha", "join_teste_controlado", "BLOQUEANTE", 0.60, 0.80, False,
                           "Execução intencional: 60% de correspondência, mínimo 80%")
         except QualityError as exc:
-            cloud.alert("demo-falha", "quality-fail-demo", "export-phase3", str(exc))
+            cloud.alert("demo-falha", "quality-fail-demo", str(exc))
             raise
     elif args.command == "finops":
         from .finops import make_report

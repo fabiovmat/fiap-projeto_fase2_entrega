@@ -8,7 +8,7 @@ if ! git config --global user.name >/dev/null || ! git config --global user.emai
   exit 1
 fi
 if [[ ! -d .git ]]; then git init -b main; fi
-git add .gitignore .env.example requirements.txt pyproject.toml README.md COMANDOS_CLOUD_SHELL.txt src tests scripts docs
+git add .gitignore .env.example requirements.txt pyproject.toml README.md src tests scripts docs
 if git diff --cached --quiet; then
   echo "Sem alterações para commit."
 else
