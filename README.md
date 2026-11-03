@@ -89,14 +89,13 @@ flowchart TD
 | Pytest | Testes automatizados de regras puras | Verificação local sem consumo de nuvem |
 | Git/GitHub | Versionamento e entrega | Rastreabilidade do código e da documentação |
 
-**Acesso à origem:** leitura direta das tabelas públicas no BigQuery, seguida de exportação para Parquet. Evita baixar manualmente os arquivos e favorece reexecução, mas consultas e exportações podem consumir recursos faturáveis. **Uma única nuvem** evita complexidade de IAM, faturamento e transferência entre provedores. Orquestração agendada, CI/CD, dashboards e infraestrutura como código **não estão implementados** neste pacote.
 
 ---
 
 ## 4. Estrutura do repositório
 
 ```text
-fiap-alfabetizacao-gcp/
+fiap-projeto_fase2_entrega/
 ├── .env.example
 ├── .gitignore
 ├── README.md
@@ -121,15 +120,13 @@ fiap-alfabetizacao-gcp/
 ├── tests/
 │   └── test_quality.py
 └── docs/
-    ├── roteiro-video.md
+    
     └── evidencias/
         ├── .gitkeep
         └── LEIA-ME.md
 ```
 
-Arquivos como `docs/esquema.json`, `docs/dry-run.json`, `docs/finops-medido.md` e evidências em JSON **só existirão após os respectivos comandos serem executados**. Prints e registros de execução devem ser incluídos manualmente na entrega.
 
----
 
 ## 5. Pré-requisitos e segurança
 
@@ -139,15 +136,14 @@ Arquivos como `docs/esquema.json`, `docs/dry-run.json`, `docs/finops-medido.md` 
 4. APIs habilitáveis de BigQuery, Cloud Storage e Pub/Sub.
 5. **Orçamento e alertas de faturamento configurados** antes de ingerir os microdados.
 
-**Segurança:** não versionar `.env`, credenciais JSON, tokens de webhook ou dados pessoais. O `.gitignore` protege esses itens comuns, mas o histórico Git deve ser revisado antes de publicar. Não subir microdados individuais para o repositório.
 
 ### 5.1 Clonar e instalar
 
 No [Google Cloud Shell](https://shell.cloud.google.com/):
 
 ```bash
-git clone https://github.com/SEU-USUARIO/fiap-alfabetizacao-gcp.git
-cd fiap-alfabetizacao-gcp
+git clone https://github.com/fabiovmat/fiap-projeto_fase2_entrega.git
+cd fiap-validacao-final
 
 python3 -m venv .venv
 source .venv/bin/activate
@@ -159,7 +155,7 @@ cp .env.example .env
 nano .env
 ```
 
-Variáveis de exemplo (substituir os identificadores, **não publicar o arquivo `.env`**):
+
 
 ```dotenv
 GCP_PROJECT_ID=seu-projeto-gcp
@@ -262,7 +258,7 @@ python -m alfabetizacao.cli consume --count 6
 
 # Um evento inválido (indicador > 100): Bronze recebe, Gold exclui
 python -m alfabetizacao.cli publish --count 1 --invalid
-python -m alfabetizacao.cli consume --count 1
+:python -m alfabetizacao.cli consume --count 1
 ```
 
 O produtor marca `origem=simulado`. O consumidor salva o payload bruto **antes de confirmar o recebimento** (*ack*), registrando cada entrega em `bronze.eventos`. O processamento valida campos obrigatórios, percentual de 0 a 100, data e município; filtra valores inválidos e deduplica por `event_id` para construir `gold.indicador_eventos`, com `categoria_fonte=nao_oficial`.
