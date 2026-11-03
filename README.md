@@ -1,100 +1,73 @@
 # Tech Challenge FIAP — Fase 2
-
 ## Pipeline híbrido para análise da alfabetização no Brasil
 
-**Pós-Tech FIAP | Tech Challenge — Fase 2**  
-**Equipe:** Fabio Verissimo
-**Repositório:** https://github.com/fabiovmat/fiap-projeto_fase2_entrega.git  
-**Vídeo executivo (até 5 minutos):** https://youtu.be/_h3-h79YDRE
-
-
-
----
+**Pós-Tech FIAP — Tech Challenge, Fase 2**  
+**Responsável:** Fabio Verissimo  
+**Repositório:** [fabiovmat/fiap-projeto_fase2_entrega](https://github.com/fabiovmat/fiap-projeto_fase2_entrega)  
+**Apresentação executiva:** [Vídeo do projeto (até 5 minutos)](https://youtu.be/_h3-h79YDRE)  
+**Execução documentada:** 02/11/2026 — Google Cloud Platform
 
 ## 1. Contexto e objetivo
 
-O **Compromisso Nacional Criança Alfabetizada** busca assegurar a alfabetização até o fim do 2º ano do ensino fundamental. Segundo o enunciado do Tech Challenge, o Inep definiu, com a Pesquisa Alfabetiza Brasil (2023), **743 pontos na escala Saeb** como referência para considerar uma criança alfabetizada.
+O projeto implementa uma pipeline híbrida de Engenharia de Dados para integrar informações públicas sobre alfabetização no Brasil, indicadores territoriais e metas educacionais. A arquitetura combina ingestão em lote de dados oficiais com eventos simulados transmitidos pelo Pub/Sub, disponibilizando resultados analíticos no BigQuery com rastreabilidade operacional.
 
-O objetivo técnico é criar uma **pipeline híbrida de Engenharia de Dados**, com ingestão **batch e streaming simulado**, integração de indicadores oficiais e metas educacionais, tratamento e validação de dados, disponibilização de uma camada analítica e registro de indicadores operacionais e financeiros na **Google Cloud Platform (GCP)**.
+O Compromisso Nacional Criança Alfabetizada busca assegurar a alfabetização ao final do 2º ano do ensino fundamental. Conforme o enunciado da FIAP, a referência da Pesquisa Alfabetiza Brasil (2023) é de **743 pontos na escala Saeb**. A meta pactuada para 2030 na rede pública é de **80%**; a universalização da alfabetização constitui um objetivo mais amplo e não é tratada como a mesma meta contratual.
 
-### Atenção à meta de 2030
+**Fonte:** [Base dos Dados — Avaliação da Alfabetização](https://basedosdados.org/dataset/073a39d4-89cf-4068-b1e8-34ed0d9c0b72)  
+**BigQuery de origem:** `basedosdados.br_inep_avaliacao_alfabetizacao`
 
-- **80%:** meta *pactuada* para a rede pública na coluna `meta_alfabetizacao_2030` da fonte oficial, conforme o enunciado. As comparações na Gold usam **o valor de meta disponível em cada registro**, e não um valor presumido.
-- **Universalização:** objetivo **aspiracional** da política pública, que **não deve ser confundido com a meta pactuada**.
-- O projeto não considera um evento de simulação como resultado oficial.
-
-### Fonte de dados
-
-[Base dos Dados — Avaliação da Alfabetização](https://basedosdados.org/dataset/073a39d4-89cf-4068-b1e8-34ed0d9c0b72)  
-**Projeto de origem no BigQuery:** `basedosdados`  
-**Dataset:** `br_inep_avaliacao_alfabetizacao`
-
-| Tabela oficial | Aplicação na pipeline |
+| Tabela de origem | Aplicação |
 |---|---|
-| `alunos` | Microdados; contagem de registros agrupados para relacionar com indicadores territoriais |
-| `municipio` | Resultados oficiais por município, ano, série e rede |
-| `uf` | Resultados oficiais por unidade federativa |
-| `meta_alfabetizacao_brasil` | Trajetória de metas nacionais publicada na Gold |
-| `meta_alfabetizacao_uf` | Comparação com metas estaduais |
-| `meta_alfabetizacao_municipio` | Comparação com metas municipais |
-| `dicionario` | Referência oficial para interpretação de códigos e categorias |
+| `alunos` | Microdados, agrupados para avaliação de cobertura dos indicadores territoriais |
+| `municipio` | Indicadores municipais por ano, rede e série |
+| `uf` | Indicadores por unidade federativa |
+| `meta_alfabetizacao_brasil` | Trajetória nacional de metas |
+| `meta_alfabetizacao_uf` | Metas estaduais |
+| `meta_alfabetizacao_municipio` | Metas municipais |
+| `dicionario` | Interpretação oficial de códigos e categorias |
 
-As **seis entidades obrigatórias** estão contempladas no código, além da tabela auxiliar `dicionario`. A efetividade dos relacionamentos deve ser verificada após a primeira execução com dados reais.
+As seis entidades previstas no desafio são processadas, além do dicionário de apoio.
 
----
+## 2. Arquitetura da solução
 
-## 2. Arquitetura
-
-```mermaid
+~~~mermaid
 flowchart TD
-    S[Base dos Dados / BigQuery público] --> B[Batch Python / EXPORT DATA]
-    B --> BR[(Cloud Storage / Bronze Parquet / run_id)]
-    BR --> BX[BigQuery / tabelas externas Bronze]
-    BX --> SI[BigQuery / Silver normalizada]
-    SI --> Q{Validações bloqueantes e joins}
-    Q -- aprovadas --> GO[(BigQuery / Gold oficial)]
-    Q -- rejeitadas --> OP[(BigQuery / ops: qualidade, alertas e métricas)]
-    P[Gerador Python / eventos simulados] --> PS[Pub/Sub / tópico e assinatura]
-    PS --> C[Consumidor por micro-lotes / pull manual]
-    C --> BE[(BigQuery / Bronze de eventos / append)]
-    BE --> SE[BigQuery / Silver / filtro e deduplicação]
-    SE --> GE[(BigQuery / Gold de eventos simulados)]
-    GO --> A[SQL / relatórios / futura análise preditiva]
-    GE --> A
+    F[Base dos Dados / BigQuery] --> B[Ingestão Batch em Python]
+    B --> GCS[Cloud Storage / Bronze / Parquet versionado]
+    GCS --> BR[BigQuery / tabelas externas Bronze]
+    BR --> SI[BigQuery / Silver padronizada]
+    SI --> Q{Qualidade e correspondência de joins}
+    Q -->|Regras aprovadas| GO[BigQuery / Gold oficial]
+    Q -->|Falha bloqueante| OP[BigQuery / ops]
+    P[Produtor de eventos simulados] --> PS[Pub/Sub]
+    PS --> C[Consumidor Python / micro-lotes]
+    C --> BE[BigQuery / Bronze de eventos]
+    BE --> SE[Silver / validação e deduplicação]
+    SE --> GE[Gold / eventos não oficiais]
     B --> OP
     C --> OP
-```
+    OP --> SL[Webhook Slack / alertas]
+    GO --> EX[Exportação Parquet / Fase 3]
+~~~
 
-### Camadas da arquitetura medalhão
+| Componente | Implementação |
+|---|---|
+| **Bronze** | Snapshots históricos em Parquet no Cloud Storage, vinculados a `run_id`; tabelas externas BigQuery e eventos brutos persistidos por append |
+| **Silver** | Normalização de campos e chaves, preservação das informações de origem e agregação dos microdados para comparação |
+| **Gold** | Indicadores oficiais territoriais, metas, resumo de alunos, dicionário e tabela separada de eventos simulados |
+| **Ops** | Histórico de execuções, métricas dos jobs, regras de qualidade e alertas em BigQuery |
+| **Streaming** | Pub/Sub com produção e consumo em micro-lotes, filtro de eventos inválidos e deduplicação por `event_id` |
+| **Observabilidade** | Persistência operacional, identificação de falhas e notificação externa via webhook Slack |
 
-| Camada | Implementação no projeto | Política |
-|---|---|---|
-| **Bronze** | Parquet no Cloud Storage e tabelas externas BigQuery; eventos brutos em `bronze.eventos` | Cada batch grava um `run_id` novo no GCS; a tabela externa aponta para o snapshot mais recente. Eventos são acrescentados à tabela, inclusive quando duplicados ou inválidos. |
-| **Silver** | Tabelas BigQuery com chaves normalizadas e campos de origem preservados | Os snapshots Silver são recriados no batch. Eventos passam por filtros e deduplicação por `event_id`. |
-| **Gold** | Indicadores territoriais, metas nacionais, resumo de alunos, dicionário e eventos simulados | Publicação do batch ocorre após validações bloqueantes; eventos simulados ficam em tabela separada, identificados como não oficiais. |
-| **Operacional (`ops`)** | `runs`, `metricas`, `qualidade`, `alertas` | Registros acumulativos para auditoria; não são substitutos de alerta externo configurado. |
+O Batch utiliza snapshots e recria Silver/Gold com base na ingestão atual. A Bronze conserva snapshots anteriores. O consumo do Pub/Sub é acionado por comando; não há consumidor contínuo nem orquestração periódica automática neste protótipo.
 
-**Batch versus streaming:** o batch captura snapshots históricos das tabelas públicas. O streaming simula atualizações por Pub/Sub e recebe mensagens em **micro-lotes acionados manualmente**. A entrada de eventos é incremental, mas o código atual **recria** as tabelas Silver e Gold de eventos a cada atualização; portanto, **não existe consumidor contínuo nem atualização analítica incremental por linha**. Essa é uma limitação consciente do protótipo.
+### Tecnologias
 
----
+Python 3.10+, Google BigQuery, Google Cloud Storage, Google Pub/Sub, Google Cloud Shell, Pytest, Git e GitHub.
 
-## 3. Tecnologias e decisões arquiteturais
+## 3. Organização do repositório
 
-| Tecnologia | Finalidade | Justificativa |
-|---|---|---|
-| Python 3.10+ | Orquestração, publicação, consumo, regras e relatórios | Código reprodutível e bibliotecas oficiais GCP |
-| BigQuery | SQL, Bronze externa, Silver, Gold e auditoria | Processamento gerenciado sem cluster permanente |
-| Cloud Storage | Snapshots Bronze e exportação da Gold | Formato Parquet e preservação de histórico |
-| Pub/Sub | Mensageria dos eventos simulados | Testes de reentrega e duplicação |
-| Pytest | Testes automatizados de regras puras | Verificação local sem consumo de nuvem |
-| Git/GitHub | Versionamento e entrega | Rastreabilidade do código e da documentação |
-
-
----
-
-## 4. Estrutura do repositório
-
-```text
+~~~text
 fiap-projeto_fase2_entrega/
 ├── .env.example
 ├── .gitignore
@@ -105,59 +78,161 @@ fiap-projeto_fase2_entrega/
 │   ├── init_git.sh
 │   ├── setup_gcp.sh
 │   └── verificar.sh
-├── src/
-│   └── alfabetizacao/
-│       ├── __init__.py
-│       ├── batch.py
-│       ├── cli.py
-│       ├── cloud.py
-│       ├── config.py
-│       ├── finops.py
-│       ├── gold.py
-│       ├── quality.py
-│       ├── schema.py
-│       └── streaming.py
+├── src/alfabetizacao/
+│   ├── __init__.py
+│   ├── batch.py
+│   ├── cli.py
+│   ├── cloud.py
+│   ├── config.py
+│   ├── finops.py
+│   ├── gold.py
+│   ├── quality.py
+│   ├── rede.py
+│   ├── schema.py
+│   └── streaming.py
 ├── tests/
-│   └── test_quality.py
+│   ├── test_gold_coverage.py
+│   ├── test_quality.py
+│   └── test_rede.py
 └── docs/
-    
+    ├── diagnostico-cobertura-alunos.md
+    ├── diagnostico-rede.md
+    ├── dry-run.json
+    ├── esquema.json
+    ├── finops-medido.md
+    ├── finops-medido.json
     └── evidencias/
-        ├── .gitkeep
-        └── LEIA-ME.md
-```
+        ├── 01_execucoes.json
+        ├── 02_metricas.json
+        ├── 03_qualidade.json
+        ├── 04_alertas.json
+        ├── 05_gold_municipio.json
+        ├── 06_gold_eventos.json
+        ├── 08_batch_completo_sucesso.log
+        ├── 10_streaming_consume.log
+        ├── 12_evento_invalido_consume.log
+        ├── 13_alerta_slack.log
+        ├── 14_alerta_slack.png
+        └── 15_armazenamento_bigquery.txt
+~~~
 
+## 4. Execução comprovada no Google Cloud
 
+**Projeto GCP:** `project-69677cc7-ad0d-49e4-b6f`  
+**Bucket:** `gs://fiap-projeto_fase2_entrega/`  
+**Run do Batch completo:** `20261102T213746Z_f9941625`  
+**Resultado:** `SUCESSO`, iniciado às 21:37:46 e concluído às 21:39:12 UTC de 02/11/2026.
 
-## 5. Pré-requisitos e segurança
+| Indicador | Resultado |
+|---|---:|
+| Registros em `silver.municipio` | 23.995 |
+| Registros em `gold.indicador_municipio` | 23.995 |
+| Chaves municipais analíticas duplicadas | 0 |
+| Taxa de match de microdados nas redes individuais comparáveis | 94,49% |
+| Cobertura histórica incluindo redes agregadas | 51,71% — informativa |
+| Eventos recebidos na Bronze do streaming | 7 |
+| Eventos válidos e únicos na Gold do streaming | 5 |
+| Duplicações na Gold do streaming | 0 |
+| Eventos inválidos excluídos da camada analítica | 1 |
+| Latência média dos eventos válidos na Gold | 18,538 s |
+| Testes Python executados | 20 aprovados |
 
-1. Projeto GCP com **faturamento habilitado** (crédito promocional pode cobrir consumo elegível).
-2. Google Cloud Shell, Git, Python 3.10 ou superior, `pip` e acesso aos comandos `gcloud` e `bq`.
-3. Permissões para executar jobs BigQuery, administrar os datasets próprios, gravar no bucket e criar tópico/assinatura Pub/Sub.
-4. APIs habilitáveis de BigQuery, Cloud Storage e Pub/Sub.
-5. **Orçamento e alertas de faturamento configurados** antes de ingerir os microdados.
+Os **23.995 registros** correspondem a combinações de município, ano, rede e série; não equivalem à quantidade de municípios brasileiros distintos.
 
+### Qualidade e integridade referencial
 
-### 5.1 Clonar e instalar
+As regras bloqueantes verificam nulidade em chaves, unicidade, faixa percentual e correspondência nos relacionamentos pertinentes. O limiar configurado é de **80%**.
 
-No [Google Cloud Shell](https://shell.cloud.google.com/):
+A análise identificou uma diferença de granularidade entre indicadores municipais e microdados de alunos: códigos de rede **0 (total)** e **5 (rede pública agregada)** não possuem correspondência direta com redes individuais dos microdados. Por isso, a cobertura histórica geral de **51,71%** é registrada como informativa, enquanto o universo de redes individuais comparáveis alcança **94,49%** e permanece sujeito a bloqueio. As verificações por ano, rede e série também são bloqueantes.
 
-```bash
+As redes agregadas permanecem representadas na Gold. Ausência de correspondência individual é representada por `NULL`, não por zero alunos. Os indicadores de alfabetização oficiais não são recalculados como médias simples das contagens de microdados.
+
+Detalhes: [Diagnóstico de redes](docs/diagnostico-rede.md) e [Diagnóstico de cobertura](docs/diagnostico-cobertura-alunos.md).
+
+### Streaming simulado
+
+O produtor utiliza eventos marcados com `origem=simulado`. O consumo persiste as entregas na Bronze, incluindo duplicatas e mensagens inválidas. Silver e Gold mantêm apenas eventos válidos e únicos por `event_id`, com `categoria_fonte=nao_oficial`.
+
+O ensaio contemplou cinco eventos válidos, uma duplicata e um evento propositalmente inválido com indicador de 150%. O evento inválido permaneceu na Bronze e foi excluído do resultado analítico, com registro da rejeição em `ops.qualidade`.
+
+### Observabilidade e alertas
+
+As tabelas `ops.runs`, `ops.metricas`, `ops.qualidade` e `ops.alertas` armazenam os registros operacionais. A demonstração de falha controlada utilizou **60% de correspondência**, abaixo do limite bloqueante de **80%**. A regra gerou exceção, persistiu o alerta no BigQuery e o webhook enviou a notificação ao Slack (`webhook_enviado=true`).
+
+Evidências: [Batch completo](docs/evidencias/08_batch_completo_sucesso.log), [histórico de execuções](docs/evidencias/01_execucoes.json), [qualidade](docs/evidencias/03_qualidade.json), [alertas](docs/evidencias/04_alertas.json) e [captura do Slack](docs/evidencias/14_alerta_slack.png).
+
+## 5. Produtos analíticos e consultas
+
+| Tabela Gold | Finalidade |
+|---|---|
+| `gold.indicador_municipio` | Indicadores municipais, metas pactuadas, distância até a meta, situação e contagem de registros de alunos quando comparáveis |
+| `gold.indicador_uf` | Indicadores estaduais e metas do recorte público pertinente |
+| `gold.metas_brasil` | Trajetória nacional das metas |
+| `gold.alunos_resumo` | Contagem de microdados agrupados, sem atribuir a ela uma taxa ponderada |
+| `gold.dicionario` | Decodificação de categorias da fonte |
+| `gold.indicador_eventos` | Indicadores simulados, separados dos dados oficiais |
+
+Exemplo de consulta de integridade na Gold:
+
+~~~sql
+WITH chaves AS (
+  SELECT id_municipio, ano, rede_codigo, serie_codigo,
+         COUNT(*) AS ocorrencias
+  FROM `project-69677cc7-ad0d-49e4-b6f.gold.indicador_municipio`
+  GROUP BY 1, 2, 3, 4
+)
+SELECT
+  SUM(ocorrencias) AS total_registros,
+  COUNT(*) AS chaves_distintas,
+  COUNTIF(ocorrencias > 1) AS chaves_duplicadas
+FROM chaves;
+~~~
+
+Resultado documentado: **23.995 registros, 23.995 chaves distintas e zero chaves duplicadas**.
+
+A meta ausente não é convertida em zero: a coluna `status_meta_2030` retorna `sem_dado` quando não há informação suficiente. A distância até a meta é registrada em pontos percentuais, respeitando os recortes oficiais de rede e período.
+
+## 6. FinOps
+
+Foram medidos os volumes de armazenamento do ambiente e registrados os bytes processados por jobs BigQuery.
+
+| Serviço | Medição |
+|---|---:|
+| BigQuery — armazenamento lógico aproximado das tabelas | **0,339439 GiB** |
+| Cloud Storage — volume de objetos no momento da coleta | **204.451.589 bytes (0,190410 GiB)** |
+| Projeção de consultas | **4 execuções Batch/mês** — hipótese de operação |
+| Projeção de streaming | **300 mensagens/mês** — hipótese de operação |
+| Subtotal mensal bruto dos componentes quantificados | **aprox. US$ 0,02605** |
+
+O valor é uma **projeção parcial**, anterior a franquias gratuitas e créditos promocionais; **não representa faturamento efetivo**. A parcela de Cloud Storage da projeção utiliza uma hipótese de localização regional e preço de referência, sujeita à confirmação. Custos de operações, tráfego e throughput Pub/Sub não foram integralmente mensurados. O histórico de snapshots pode aumentar o armazenamento ao longo do tempo.
+
+A arquitetura utiliza BigQuery sob demanda, estimativas de leitura com `dry-run`, limite de bytes faturáveis por consulta e arquivos Parquet, sem clusters permanentes.
+
+Relatório completo: [FinOps medido](docs/finops-medido.md) · [Métricas coletadas](docs/evidencias/02_metricas.json) · [Medição de armazenamento](docs/evidencias/15_armazenamento_bigquery.txt).
+
+## 7. Reprodutibilidade
+
+### Pré-requisitos
+
+- Python 3.10+ e ferramentas `git`, `gcloud` e `bq`;
+- projeto Google Cloud com faturamento habilitado e permissões adequadas para BigQuery, Cloud Storage e Pub/Sub;
+- autenticação da conta com acesso às APIs e às tabelas públicas da Base dos Dados.
+
+### Instalação
+
+~~~bash
 git clone https://github.com/fabiovmat/fiap-projeto_fase2_entrega.git
-cd fiap-validacao-final
-
+cd fiap-projeto_fase2_entrega
 python3 -m venv .venv
 source .venv/bin/activate
-python -m pip install --upgrade pip
-pip install -r requirements.txt
-pip install -e .
-
+python -m pip install -r requirements.txt
+python -m pip install -e .
 cp .env.example .env
-nano .env
-```
+~~~
 
+Configurações do `.env`:
 
-
-```dotenv
+~~~dotenv
 GCP_PROJECT_ID=seu-projeto-gcp
 BQ_LOCATION=US
 GCS_LOCATION=us-central1
@@ -167,269 +242,79 @@ PUBSUB_SUBSCRIPTION=alfabetizacao-consumer
 MAX_BYTES_BILLED=1073741824
 MIN_JOIN_MATCH_RATE=0.80
 ALERT_WEBHOOK_URL=
-```
+~~~
 
-- `MAX_BYTES_BILLED`: teto por consulta, inicialmente **1 GiB**, que pode bloquear leituras grandes da origem; ajustar **somente depois do dry-run e da avaliação de custos**.
-- `MIN_JOIN_MATCH_RATE`: mínimo inicial de **80%**; **parâmetro provisório**, que deve ser revisto e justificado com base nas taxas reais observadas.
-- `GCS_LOCATION=us-central1`: opção de bucket regional compatível com tabelas externas no dataset BigQuery `US` e elegível às cotas gratuitas do Storage quando aplicáveis. Se já houver um bucket criado em `US`, o script **não altera** sua localização automaticamente.
-- `ALERT_WEBHOOK_URL`: sem valor configurado, o erro permanece registrado em `ops.alertas`, mas **nenhuma notificação externa é enviada**.
+A variável `ALERT_WEBHOOK_URL` é opcional para execução sem alertas externos; seu token real não é versionado. O arquivo `.env` permanece fora do Git.
 
-### 5.2 Autenticação, testes e provisionamento
+### Testes e criação dos recursos
 
-```bash
-# Se a conta ADC não estiver disponível no Cloud Shell:
-gcloud auth application-default login
-
-bash scripts/verificar.sh
+~~~bash
+python -m pip check
+python -m pytest -q
 bash scripts/setup_gcp.sh
-
-# Inspecionar recursos criados
-gcloud config get-value project
-gcloud storage buckets describe "gs://$(grep '^GCS_BUCKET=' .env | cut -d= -f2)"
-```
-
-O `setup_gcp.sh` habilita APIs, cria o bucket se não existir, inicializa datasets `bronze`, `silver`, `gold` e `ops`, cria tabelas operacionais e prepara Pub/Sub. Isso **provisiona recursos reais** e depende de permissões e créditos disponíveis; executar localmente os testes **não** comprova implantação em nuvem.
-
-### 5.3 Inspecionar a origem e estimar consultas
-
-```bash
 python -m alfabetizacao.cli schema
-cat docs/esquema.json
-
 python -m alfabetizacao.cli dry-run
-cat docs/dry-run.json
-```
+~~~
 
-É obrigatório verificar os nomes, tipos e códigos realmente publicados. O módulo `schema.py` contém **candidatos de nomes**, não um esquema garantido. Caso a origem tenha mudado, ajustar os mapeamentos e documentar a decisão; não inventar códigos da rede/série ou substituir ausência de meta por zero.
+### Pipeline Batch
 
-> O `dry-run` estima bytes processados das sete tabelas; **não substitui a medição de execução**, e `LIMIT` não é uma estratégia de redução garantida de bytes lidos. Se algum scan ultrapassar o limite configurado, revisar a consulta e o recorte antes de aumentar o teto.
-
----
-
-## 6. Executar ingestão batch
-
-```bash
+~~~bash
 python -m alfabetizacao.cli batch
-```
+~~~
 
-Etapas previstas no código:
+O Batch lê os dados públicos, grava snapshots Parquet na Bronze, normaliza a Silver, aplica regras bloqueantes e publica as tabelas Gold após aprovação das validações.
 
-1. Inventário dos sete esquemas e estimativa de bytes.
-2. Exportação de cada tabela oficial para `gs://BUCKET/bronze/TABELA/run_id=.../part-*.parquet`.
-3. Criação/atualização das tabelas externas `bronze` que leem o último snapshot.
-4. Padronização das chaves na `silver`.
-5. Verificação de nulos, duplicidade, faixas válidas e correspondência dos relacionamentos.
-6. Publicação das tabelas Gold **somente depois das validações previstas**.
-7. Persistência de métricas, resultados das regras e alertas em `ops`.
+### Streaming simulado
 
-**Histórico:** o destino de cada ingestão tem `run_id` exclusivo e utiliza `overwrite=false`. Uma nova execução acrescenta objetos no GCS, sem apagar os anteriores. A atualização das tabelas externas Bronze usa `CREATE OR REPLACE` apenas nos *metadados de apontamento*, não nos snapshots armazenados. Silver/Gold do batch são reconstruídas, **sem histórico próprio garantido**.
-
-Para provar preservação do histórico, após verificar custos, faça uma segunda execução e compare dois diretórios `run_id`:
-
-```bash
-python -m alfabetizacao.cli batch
-# Substitua SEU_BUCKET pelo valor configurado
-gcloud storage ls 'gs://SEU_BUCKET/bronze/municipio/'
-```
-
-### Produtos analíticos
-
-| Tabela | Finalidade |
-|---|---|
-| `gold.indicador_municipio` | Resultado oficial, comparação restrita às metas municipais, referências de indicadores UF por rede correspondente e contagem de microdados |
-| `gold.indicador_uf` | Resultado por UF; metas de rede Pública associadas somente ao mesmo recorte da fonte |
-| `gold.metas_brasil` | Trajetória de metas nacionais |
-| `gold.alunos_resumo` | Contagem agrupada dos microdados, sem interpretação como taxa de alfabetização |
-| `gold.dicionario` | Dicionário oficial para consulta de categorias |
-
-**Rigor analítico:** o cálculo de `distancia_pactuada_2030_pp` usa meta pactuada menos indicador oficial **no recorte disponível**. Meta ausente resulta em `sem_dado`, não em `nao_atingiu`. Não se publica média simples dos municípios como indicador nacional. O starter **não recalcula a taxa ponderada dos alunos**; isso demanda confirmar presença, peso amostral e denominador no dicionário oficial.
-
----
-
-## 7. Executar streaming simulado
-
-```bash
-# O setup já prepara o Pub/Sub; este comando pode ser repetido
+~~~bash
 python -m alfabetizacao.cli pubsub-init
-
-# Cinco eventos válidos e uma publicação duplicada
 python -m alfabetizacao.cli publish --count 5 --duplicate
 python -m alfabetizacao.cli consume --count 6
-
-# Um evento inválido (indicador > 100): Bronze recebe, Gold exclui
 python -m alfabetizacao.cli publish --count 1 --invalid
-:python -m alfabetizacao.cli consume --count 1
-```
+python -m alfabetizacao.cli consume --count 1
+~~~
 
-O produtor marca `origem=simulado`. O consumidor salva o payload bruto **antes de confirmar o recebimento** (*ack*), registrando cada entrega em `bronze.eventos`. O processamento valida campos obrigatórios, percentual de 0 a 100, data e município; filtra valores inválidos e deduplica por `event_id` para construir `gold.indicador_eventos`, com `categoria_fonte=nao_oficial`.
+### Evidências e cenários operacionais
 
-**Semântica:** Pub/Sub pode entregar uma mensagem mais de uma vez (*at least once*); a Bronze conserva as entregas, e o resultado analítico procura manter uma ocorrência lógica por evento. A latência observada é calculada a partir de `produced_at` e do momento de recebimento/ingestão, e **não é definida artificialmente como zero**.
-
-Verificação SQL:
-
-```bash
-bq query --use_legacy_sql=false \
-'SELECT event_id, origem, categoria_fonte, indicador, latencia_seg
- FROM `SEU_PROJETO.gold.indicador_eventos`
- ORDER BY ingested_at DESC LIMIT 20'
-```
-
-**Limitação:** a frequência depende do comando de consumo manual; não há serviço permanentemente ativo. O algoritmo atual refaz Silver/Gold dos eventos, embora consuma apenas as mensagens novas de cada micro-lote.
-
----
-
-## 8. Regras de qualidade de dados
-
-| Regra | Classificação | Efeito esperado |
-|---|---|---|
-| Nulos em chaves essenciais e ano, quando aplicável | Bloqueante | Não publicar Gold em caso de falha |
-| Duplicidade no grão de junção/resultado | Bloqueante | Interromper publicação |
-| Valores de indicadores fora de 0 a 100 | Bloqueante | Interromper publicação |
-| Taxa de correspondência dos joins abaixo de `MIN_JOIN_MATCH_RATE` | Bloqueante | Interromper publicação |
-| Evento simulado inválido | Informativa + exclusão analítica | Preservar payload em Bronze e excluir Silver/Gold |
-
-O código registra as regras em `ops.qualidade` com nome, valor, limite, classificação e status. Para reproduzir **uma falha proposital**:
-
-```bash
-python -m alfabetizacao.cli quality-fail-demo
-```
-
-Este comando **deve terminar com status de erro** ao registrar uma taxa de join de 60%, abaixo do limiar de 80%, e também registrar um alerta. Não interpretar esse erro intencional como falha do ambiente. Essa demonstração valida o comportamento da regra; **a evidência adicional de bloqueio de publicação da Gold ainda deve ser coletada em execução controlada do batch**.
-
-Confira os registros:
-
-```sql
-SELECT * FROM `SEU_PROJETO.ops.qualidade` ORDER BY checked_at DESC LIMIT 20;
-SELECT * FROM `SEU_PROJETO.ops.alertas` ORDER BY momento DESC LIMIT 20;
-```
-
-**Cuidado com joins:** a pipeline mede correspondência no recorte de chaves disponíveis. Após o primeiro processamento, é necessário comparar os códigos da origem e confirmar se as dimensões `ano`, `rede` e `serie` representam o mesmo universo de dados em todas as tabelas. Não usar `COALESCE(...,0)` para mascarar metas e proficiências ausentes.
-
----
-
-## 9. Observabilidade e alertas
-
-Os registros operacionais são gravados no BigQuery, persistindo após a execução do terminal:
-
-| Tabela | Informação registrada |
-|---|---|
-| `ops.runs` | Marcos de início e resultado de execuções batch; cada marco é uma linha |
-| `ops.metricas` | Duração por etapa, status, bytes processados, linhas de saída quando disponíveis e ID de job |
-| `ops.qualidade` | Resultado das validações bloqueantes e informativas |
-| `ops.alertas` | Falha registrada e sinalizador de entrega do webhook |
-
-O sistema detecta erros **durante a execução do comando**. Se `ALERT_WEBHOOK_URL` for configurada e testada, é feita uma tentativa de aviso no momento da falha. **Não há agendamento, monitoramento 24 horas ou SLA de detecção configurados**. Para produção, seriam necessários orquestração e alertas gerenciados (por exemplo, Cloud Scheduler/Run e Cloud Monitoring).
-
-```bash
+~~~bash
 python -m alfabetizacao.cli evidence
-```
-
-O comando produz amostras JSON em `docs/evidencias/`. Também devem ser feitos **prints reais** de BigQuery, Cloud Storage, Pub/Sub, console de erros e métricas. Os prints precisam mostrar IDs e contagens verificáveis, sem revelar segredos ou informações pessoais.
-
----
-
-## 10. FinOps — custos e medições
-
-A arquitetura evita clusters sempre ligados, usa BigQuery sob demanda, snapshots Parquet e verificação prévia com `dry-run`. O limite `MAX_BYTES_BILLED` vale **por job**; não é um teto mensal de gastos. Créditos gratuitos ou estudantis **não substituem controle financeiro**.
-
-Após pelo menos um batch real:
-
-```bash
-python -m alfabetizacao.cli finops
-cat docs/finops-medido.md
-```
-
-O relatório usa bytes de processamento registrados e tamanho atual dos objetos GCS. A projeção considera **4 execuções batch/mês como hipótese explícita** e apresenta um **subtotal parcial**, não o custo de todos os componentes. Completar a tabela abaixo com medição do projeto e preços vigentes:
-
-| Serviço | Unidade | Quantidade medida / origem | Preço unitário | Custo mensal projetado |
-|---|---|---|---|---|
-| BigQuery — consultas | TiB escaneados | **Preencher após `finops`** | Ver preço vigente da localização | **A medir** |
-| BigQuery — armazenamento | GiB-mês | **Extrair do ambiente** | Ver preço vigente | **A medir** |
-| Cloud Storage — objetos Bronze | GiB-mês | **Preencher após `finops`** | Ver preço vigente da localização | **A medir** |
-| Pub/Sub — mensagens | GiB/mês | **Medir mensagens publicadas/consumidas** | Ver preço vigente | **A medir** |
-| Operações e transferências | operações/GiB | **Conferir Billing e localizações** | Preço aplicável | **A medir** |
-
-Fontes de preços: [BigQuery](https://cloud.google.com/bigquery/pricing) · [Cloud Storage](https://cloud.google.com/storage/pricing) · [Pub/Sub](https://cloud.google.com/pubsub/pricing) · [Calculadora GCP](https://cloud.google.com/products/calculator).
-
-A ingestão é realizada na **GCP**, sem tráfego intencional entre nuvens. O bucket regional `us-central1` e os datasets BigQuery `US` são uma configuração possível para evitar movimentação de dados entre regiões incompatíveis. A seleção de localização deve ser validada no projeto antes da primeira exportação.
-
-**Nota:** o custo mensal só poderá ser apresentado como **medido/projetado com evidência** depois de coletar os dados reais do ambiente. Não afirmar custo zero somente porque há crédito promocional.
-
----
-
-## 11. Aplicação futura em Inteligência Artificial
-
-A base Gold será preservada para a **Fase 3**, possibilitando análises de desigualdade territorial e modelos de predição de desempenho ou risco de descumprimento das metas. Uma possível abordagem é criar características históricas (`ano`, localidade, série, rede, resultados em anos anteriores) para prever o indicador em um período futuro, **sem utilizar informações ainda indisponíveis na data da previsão**.
-
-**Prevenção de vazamento de alvo:** não usar a própria `distancia_pactuada_2030_pp` ou `status_meta_2030` como preditor de um rótulo derivado dessas colunas. Não usar eventos simulados para inferências sobre o Brasil real.
-
-Exportação versionada da Gold:
-
-```bash
 python -m alfabetizacao.cli export-phase3
-```
+~~~
 
-Destino previsto: `gs://BUCKET/gold/indicador_municipio/run_id=.../part-*.parquet`.
+O comando `quality-fail-demo` é uma demonstração isolada de falha bloqueante, com taxa de 60% e limite de 80%; termina intencionalmente com uma exceção e registra o alerta:
 
----
+~~~bash
+python -m alfabetizacao.cli quality-fail-demo
+~~~
 
-## 12. Evidências necessárias para a entrega
+A execução do Batch, a exportação e os comandos de streaming acessam recursos reais de nuvem e podem gerar consumo faturável. O comando `finops` regenera `docs/finops-medido.md` a partir do modelo automático do projeto, substituindo o relatório complementar documentado neste repositório.
 
-As evidências não foram produzidas automaticamente ao criar este repositório. Após executar no GCP, anexar, no mínimo:
+## 8. Evidências e continuidade para a Fase 3
 
-- [ ] Tela dos datasets `bronze`, `silver`, `gold` e `ops` criados no BigQuery.
-- [ ] Dois snapshots Bronze com `run_id` diferentes no Cloud Storage.
-- [ ] Jobs reais BigQuery com IDs, sucesso/falha, volume e duração.
-- [ ] Tabelas Gold com amostras e **contagens de linhas**.
-- [ ] Tópico/assinatura Pub/Sub e evento duplicado ou inválido tratado.
-- [ ] Gold de streaming com `origem=simulado` e latência real medida.
-- [ ] Falha proposital de qualidade, registro persistido e bloqueio quando aplicável.
-- [ ] Evidência de notificação externa configurada (webhook/alerta).
-- [ ] Relatório `docs/finops-medido.md` preenchido com custos e premissas.
-- [ ] Capturas sem credenciais/dados pessoais.
-- [ ] Link de vídeo executivo de até **5 minutos** nesta página.
+As evidências de execução estão disponíveis em [docs/evidencias](docs/evidencias), incluindo JSONs operacionais, amostras Gold, logs Batch/Streaming e captura da notificação recebida no Slack.
 
-O [roteiro do vídeo](docs/roteiro-video.md) cobre problema, arquitetura, demonstração da solução, valor público e potencial de IA. As imagens, gráficos e números citados no vídeo devem corresponder à execução registrada.
+A versão da Gold exportada em Parquet para a Fase 3 está registrada em:
 
----
+`gs://fiap-projeto_fase2_entrega/gold/indicador_municipio/run_id=20261102T220143Z_f35fc64a/part-*.parquet`
 
-## 13. Reprodutibilidade e publicação Git
+**Job de exportação:** `bdf79cb6-ebcd-4226-8322-abf4d187be0f`.
 
-A versão das dependências está declarada em `requirements.txt`. Antes de enviar ao GitHub:
+A base pode apoiar análises territoriais e desenvolvimento futuro de modelos preditivos. A modelagem deverá evitar vazamento de alvo: campos derivados diretamente do resultado, como `distancia_pactuada_2030_pp` e `status_meta_2030`, não devem ser empregados para prever rótulos derivados desses mesmos campos. Eventos simulados não compõem indicadores oficiais.
 
-```bash
-bash scripts/verificar.sh
+### Limitações do protótipo
 
-git status --short
-git add README.md src scripts tests docs .env.example .gitignore requirements.txt pyproject.toml
-git commit -m "docs: documenta arquitetura e execucao do Tech Challenge"
-git push origin main
-```
+- O streaming depende de consumo manual em micro-lotes; não há serviço de consumo permanentemente ativo.
+- A atualização analítica dos eventos recria as tabelas Silver e Gold.
+- A publicação da Gold recria tabelas de resultados; o versionamento histórico integral concentra-se nos snapshots Bronze e na exportação Parquet.
+- A análise de alunos utiliza contagens agrupadas e não recalcula taxa amostral ponderada de alfabetização.
+- Não foram implementados agendamento automático, CI/CD, infraestrutura como código ou monitoramento gerenciado 24 horas.
+- O estudo FinOps é parcial e não substitui a apuração do Cloud Billing.
 
-Em um **clone limpo**, refazer instalação, `.env`, testes, esquema, dry-run e ingestão para validar o passo a passo. Não versionar `.env`, tokens ou arquivos de chave. Verificar se os caminhos do README existem e se não há afirmações sobre CI/CD ou recursos não provisionados.
+## 9. Referências
 
-### Limitações conhecidas
-
-- Schema e códigos da fonte pública ainda exigem **inspeção e validação real**.
-- O processamento integral dos microdados pode exceder o teto inicial de 1 GiB por consulta.
-- Streaming é **simulado** com consumidor acionado manualmente; Silver/Gold de eventos são recriadas.
-- O nível mínimo de match de **80% é inicial** e precisa de calibração empiricamente justificada.
-- A agregação de microdados publicada é contagem, **não taxa amostral ponderada**.
-- Não há pipeline agendado, dashboard, CI/CD, Terraform, monitoramento gerenciado permanente ou política automatizada de retenção.
-- Notificação externa depende de configurar e testar o webhook.
-- A estimativa FinOps fornecida por script é parcial até complementar custos e cobranças reais do projeto.
-- Execução em nuvem, evidências e link do vídeo **permanecem pendentes até serem produzidos**.
-
----
-
-## 14. Referências
-
-- **Material-base do projeto:** enunciado interno da FIAP, *Tech Challenge — Fase 2: Pipeline Híbrido para Análise da Alfabetização no Brasil* (PDF fornecido aos integrantes).
-- [Base dos Dados — Dataset de Avaliação da Alfabetização](https://basedosdados.org/dataset/073a39d4-89cf-4068-b1e8-34ed0d9c0b72)
-- [BigQuery — Documentação](https://cloud.google.com/bigquery/docs)
-- [Cloud Storage — Documentação](https://cloud.google.com/storage/docs)
-- [Pub/Sub — Documentação](https://cloud.google.com/pubsub/docs)
-- [Google Cloud — Recursos gratuitos e teste](https://cloud.google.com/free/docs/free-cloud-features)
-
-**Responsáveis pela entrega:** [INSERIR NOMES]  
-**Última revisão:** [INSERIR DATA DA ENTREGA]
+- FIAP — enunciado do *Tech Challenge, Fase 2: Pipeline Híbrido para Análise da Alfabetização no Brasil*.
+- [Base dos Dados — Avaliação da Alfabetização](https://basedosdados.org/dataset/073a39d4-89cf-4068-b1e8-34ed0d9c0b72).
+- [Documentação BigQuery](https://cloud.google.com/bigquery/docs).
+- [Documentação Cloud Storage](https://cloud.google.com/storage/docs).
+- [Documentação Pub/Sub](https://cloud.google.com/pubsub/docs).
+- [Google Cloud — preços de BigQuery](https://cloud.google.com/bigquery/pricing), [Storage](https://cloud.google.com/storage/pricing) e [Pub/Sub](https://cloud.google.com/pubsub/pricing).
