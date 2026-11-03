@@ -3,9 +3,9 @@
 ## Pipeline híbrido para análise da alfabetização no Brasil
 
 **Pós-Tech FIAP | Tech Challenge — Fase 2**  
-**Equipe:** [INSERIR INTEGRANTES]  
-**Repositório:** [INSERIR URL PÚBLICA DO GITHUB]  
-**Vídeo executivo (até 5 minutos):** [INSERIR LINK DO VÍDEO]
+**Equipe:** Fabio Verissimo
+**Repositório:** https://github.com/fabiovmat/fiap-projeto_fase2_entrega.git  
+**Vídeo executivo (até 5 minutos):** https://youtu.be/_h3-h79YDRE
 
 > **Estado da entrega:** implementação disponível no repositório; **execução real no Google Cloud, validação do esquema da fonte, custos medidos e evidências ainda devem ser confirmados e adicionados pela equipe**. Não confundir código implementado com recursos efetivamente implantados.
 
